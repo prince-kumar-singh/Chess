@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
   res.render('index',{title: 'Chess Game'});
 });
 
+io.on('connection', function (uniquesocket) {
+    console.log('A user connected');
+});
+
 server.listen(3000, function () {
     console.log('Server is running on port 3000');
 });
