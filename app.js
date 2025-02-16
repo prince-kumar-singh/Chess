@@ -3,6 +3,7 @@ const socket = require('socket.io');
 const http = require('http');
 const {Chess} = require('chess.js');
 const path = require('path');
+const { log } = require('console');
 
 const app = express();
 
@@ -21,14 +22,47 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', function (uniquesocket) {
-    console.log('A user connected');
+    console.log('connected');
 
-    uniquesocket.on("churan", function (){
-        io.emit('churan papdi')
-    })
-    uniquesocket.on("disconnect", function (){
-        console.log("User disconnected")
-    })
+    if(!players.white){
+        players.white = uniquesocket.id;
+        uniquesocket.emit("playerRole",'w')
+    } else if (!players.black){
+        players.black = uniquesocket.id;
+        uniquesocket.emit("playerRole",'b')
+    } else {
+        uniquesocket.emit("spectatorRole");
+    }
+
+    uniquesocket.on("disconnect", function(){
+        if(uniquesocket.id === players.white){
+            delete players.white;
+        }
+        else if(uniquesocket.id === players.black){
+            delete players.black;
+        }
+    });
+
+    uniquesocket.on('move', (move) => {
+        try{
+            if (chess.turn() ==='w' && socket.id !== players.white) return;
+            if (chess.turn() ==='b' && socket.id !== players.black) return;
+            
+            const result = chess.move(move);
+            if (result){
+                currentPlayer = chess.turn();
+                io.emit('move', move);
+                io.emit("boradState", chess.fen());
+            }
+            else{
+                console.log("Invalid move", move);
+                uniquesocket.emit('invalidMove', move);
+            }
+        } catch(err) {
+            console.error(err);
+            uniquesocket.emit('Invalid move :', move);
+        }
+    });
 });
 
 server.listen(3000, function () {
