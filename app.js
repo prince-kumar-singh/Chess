@@ -22,6 +22,13 @@ app.get('/', (req, res) => {
 
 io.on('connection', function (uniquesocket) {
     console.log('A user connected');
+
+    uniquesocket.on("churan", function (){
+        io.emit('churan papdi')
+    })
+    uniquesocket.on("disconnect", function (){
+        console.log("User disconnected")
+    })
 });
 
 server.listen(3000, function () {
