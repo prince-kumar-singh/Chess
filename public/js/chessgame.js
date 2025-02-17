@@ -55,7 +55,9 @@ const renderBoard = () => {
                 const targetSorce = {
                     row : parseInt(squareElement.dataset.row),
                     column : parseInt(squareElement.dataset.col)
-                }
+                };
+
+                handleMove(sourceSquare, targetSorce);
             });
         })
     });
