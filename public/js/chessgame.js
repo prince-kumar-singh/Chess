@@ -15,7 +15,7 @@ const renderBoard = () => {
         row.forEach((square, squareindex) => {
             //console.log(square)
             const squareElement = document.createElement('div');
-            squareElement.classList.add('square', (rowindex+squareindex) % 2 === 0 ? 'light' : 'dark');
+            squareElement.classList.add('square', (rowindex + squareindex) % 2 === 0 ? 'light' : 'dark');
 
             squareElement.dataset.row = rowindex;
             squareElement.dataset.col = squareindex;
@@ -32,7 +32,7 @@ const renderBoard = () => {
                 pieceElement.addEventListener('dragstart', (e) => {
                     if (pieceElement.draggable) {
                         draggedPiece = pieceElement;
-                        sourceSquare = {row: rowindex, column: squareindex};
+                        sourceSquare = { row: rowindex, column: squareindex };
                         e.dataTransfer.setData('text/plain', '');
                     }
                 });
@@ -43,25 +43,27 @@ const renderBoard = () => {
                 });
 
                 squareElement.appendChild(pieceElement);
-
             }
 
             squareElement.addEventListener('dragover', (e) => {
                 e.preventDefault();
-            })
+            });
 
-            squareElement,addEventListener('drop', (e) => {
+            squareElement.addEventListener('drop', (e) => {
                 e.preventDefault();
-                const targetSorce = {
-                    row : parseInt(squareElement.dataset.row),
-                    column : parseInt(squareElement.dataset.col)
+                const targetSource = {
+                    row: parseInt(squareElement.dataset.row),
+                    column: parseInt(squareElement.dataset.col)
                 };
 
-                handleMove(sourceSquare, targetSorce);
+                handleMove(sourceSquare, targetSource);
             });
-        })
+
+            boardElement.appendChild(squareElement);
+        });
     });
 };
+
 const handleMove = () => {};
 const getPieceUnicode = () => {};
 
