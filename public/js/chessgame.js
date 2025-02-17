@@ -45,6 +45,18 @@ const renderBoard = () => {
                 squareElement.appendChild(pieceElement);
 
             }
+
+            squareElement.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            })
+
+            squareElement,addEventListener('drop', (e) => {
+                e.preventDefault();
+                const targetSorce = {
+                    row : parseInt(squareElement.dataset.row),
+                    column : parseInt(squareElement.dataset.col)
+                }
+            });
         })
     });
 };
