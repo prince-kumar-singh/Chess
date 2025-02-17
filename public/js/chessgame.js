@@ -9,11 +9,8 @@ let playerRole = null;
 const renderBoard = () => {
     const board = chess.board();
     boardElement.innerHTML = "";
-    //console.log(board);
     board.forEach((row, rowindex) => {
-        //console.log(row,rowindex);
         row.forEach((square, squareindex) => {
-            //console.log(square)
             const squareElement = document.createElement('div');
             squareElement.classList.add('square', (rowindex + squareindex) % 2 === 0 ? 'light' : 'dark');
 
@@ -66,11 +63,20 @@ const renderBoard = () => {
 
 const handleMove = (source, target) => {
     const move = {
-        from: `${String.fromCharCode(97+source,col)}${8-source.row}`,
-        to: `${String.fromCharCode(97+target,col)}${8-target.row}`,
-        promotion: 'q'
+        from: `${String.fromCharCode(97 + source.column)}${8 - source.row}`,
+        to: `${String.fromCharCode(97 + target.column)}${8 - target.row}`,
+        promotion: 'q' // Assuming promotion to queen for simplicity
+    };
+
+    const result = chess.move(move);
+    if (result) {
+        renderBoard();
+        socket.emit('move', move);
+    } else {
+        console.error('Invalid move:', move);
     }
 };
+
 const getPieceUnicode = (piece) => {
     const unicodePieces = {
         p: "♟",  // Black Pawn
@@ -86,9 +92,28 @@ const getPieceUnicode = (piece) => {
         Q: "♕",  // White Queen
         K: "♔"   // White King
     };
-    
 
     return unicodePieces[piece.type] || "";
 };
+
+socket.on("playerRole", function(role) {
+    playerRole = role;
+    renderBoard();
+});
+
+socket.on("spectatorRole", function() {
+    playerRole = null;
+    renderBoard();
+});
+
+socket.on("boardState", function(fen) {
+    chess.load(fen);
+    renderBoard();
+});
+
+socket.on("move", function(move) {
+    chess.move(move);
+    renderBoard();
+});
 
 renderBoard();
