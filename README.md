@@ -61,28 +61,7 @@ Chess/
 1. **Access the Game**: Navigate to `http://localhost:3000/` in your web browser.
 2. **Start Playing**: Share the URL with a friend to start a two-player game.
 
-## Contributing
 
-Contributions are welcome! To contribute:
-
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Make your changes and commit them:
-   ```bash
-   git commit -m 'Add new feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature-name
-   ```
-5. Submit a pull request.
-
-## License
-
-This project is licensed under the **ISC License**.
 
 ## Acknowledgements
 
