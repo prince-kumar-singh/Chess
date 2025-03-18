@@ -36,7 +36,7 @@ npm install
 
 ### 3. Start the Application:
 ```bash
-node app.js
+npx nodemon
 ```
 The server will start on `http://localhost:3000/`.
 
